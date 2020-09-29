@@ -9,7 +9,7 @@ BGJ
 
 Participantes: 
 =====
-Bryan Umaña Morales B87997
+* Bryan Umaña Morales B87997
 
 Descripcion breve del proyecto:
 =====
