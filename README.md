@@ -11,14 +11,11 @@ Participantes:
 =====
 * Bryan Umaña Morales B87997
 * Eyson Jaffet Alfaro Venegas B90239
+* Gilbert Márquez Aldana B94560
 
 Descripcion breve del proyecto:
 =====
-ejemploejemploejemplo
-
-* Ejemplo de division por puntos
-    *  Ejemplo de subdivision por puntos
-*  Ejemplo de division por puntos
+Con el desarrollo de este proyecto se pretende diseñar una solución tecnológica que permita determinar en un espacio público el correcto seguimiento de las principales medidas de seguridad en el contexto de la pandemia por covid-19. Haremos uso del lenguaje ensamblador, ya que tanto la entrada de datos como la arquitectura serán simuladas. Se implementará una serie de cálculos para determinar si una persona cumple con las siguientes medidas: distanciamiento social, temperatura corporal y uso de mascarilla.
 
 
 
