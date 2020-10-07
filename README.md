@@ -36,4 +36,9 @@ Descripcion detallada del proyecto:
    I.	Entrada: Los datos de entrada serán tomados directamente de un archivo que contendrá la información suministrada por las cámaras.
 
    II.	Salida: La salida de los datos será por medio de la consola además de que dicha información se guardará en un archivo.
+   
+   
+Diagrama del proyecto
+=====  
+![Banner](Acuerdo_De_Arquitectura_BGJ_Actualizado.jpg?raw=true) 
 
