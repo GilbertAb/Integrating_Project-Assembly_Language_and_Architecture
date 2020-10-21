@@ -72,7 +72,7 @@ int main()
         //resultado = calcularDistancia(param_1, param_2,param_3, param_4);
         //cout << "Distancia: "<< resultado << endl;
         //Se guarda el resultado en el archivo.
-        cout << param_1 << endl;
+        cout << param_1 << endl; // Se imprime solo para verificar que el metodo sirva (Luego esto se eliminará)
         cout << param_2 << endl;
         cout << param_3 << endl;
         cout << param_4 << endl;
