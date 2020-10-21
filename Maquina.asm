@@ -70,9 +70,9 @@ calcularMascarilla:
     push rbp
     mov rbp, rsp
 
-    vsubss xmm0, xmm0, xmm1
-    vmulss xmm0, xmm0, xmm0
-    ;vdivss xmm0, xmm0, [CONSTANTE3]
+    vsubss xmm0, xmm0, xmm1 ;Se restan las dos sumatorias (cada sumatoria representa la intensidad de los píxeles de una imagen)
+    vmulss xmm0, xmm0, xmm0 ;Se eleva al cuadrado el resultado
+    ;vdivss xmm0, xmm0, [CONSTANTE3]    se divide entre 10000 (la cantidad de píxeles que tiene una imagen).
 
     mov rsp, rbp 
     pop rbp
