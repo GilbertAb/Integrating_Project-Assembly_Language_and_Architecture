@@ -47,10 +47,10 @@ calcularTemperatura:
     push rbp
     mov rbp, rsp
 
-    ;vmulss xmm0, xmm0, [CONSTANTE]  ; ( Radiacion * CONSTANTE ) ;Multiplicar la radiacion por la constante 0.0000000572
+    ;vmulss xmm0, xmm0, [CONSTANTE]  ; Se Multiplica la radiacion por la constante 0.0000000572 ( Radiacion * CONSTANTE ) 
     vsqrtss xmm0, xmm0, xmm0  
-    vsqrtss xmm0, xmm0, xmm0  ;Sacarle 2 veces raiz cuadrada, que equivale a sacarle raiz cuarta.
-    ;vsubss xmm0, xmm0, [CONSTANTE2] ;Restarle 273.15 para pasarlo de Kelvin a Centigrados
+    vsqrtss xmm0, xmm0, xmm0         ; Se Saca 2 veces la raiz cuadrada, que equivale a elevar el dato a la 1/4. ( (Radiacion * CONSTANTE)^1/4 )
+    ;vsubss xmm0, xmm0, [CONSTANTE2] ; Se Resta 273.15 para pasarlo de Kelvin a Centigrados
 
 
     mov rsp, rbp 
@@ -70,9 +70,9 @@ calcularMascarilla:
     push rbp
     mov rbp, rsp
 
-    vsubss xmm0, xmm0, xmm1 ;Se restan las dos sumatorias (cada sumatoria representa la intensidad de los píxeles de una imagen)
-    vmulss xmm0, xmm0, xmm0 ;Se eleva al cuadrado el resultado
-    ;vdivss xmm0, xmm0, [CONSTANTE3]    se divide entre 10000 (la cantidad de píxeles que tiene una imagen).
+    vsubss xmm0, xmm0, xmm1             ; Se restan las dos sumatorias (cada sumatoria representa la intensidad de los píxeles de una imagen)
+    vmulss xmm0, xmm0, xmm0             ; Se eleva al cuadrado el resultado
+    ;vdivss xmm0, xmm0, [CONSTANTE3]    ; se divide entre 10000 (la cantidad de píxeles que tiene una imagen).
 
     mov rsp, rbp 
     pop rbp
