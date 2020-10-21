@@ -21,15 +21,15 @@ calcularDistancia:
     push rbp
     mov rbp, rsp
 
-    vsubss xmm0, xmm2, xmm0  ; x2-x
-    vsubss xmm1, xmm3, xmm1  ; y2-x
+    vsubss xmm0, xmm2, xmm0  ; Se calcula la resta de la posicion de X_2 con respecto a X (X_2 - X)
+    vsubss xmm1, xmm3, xmm1  ; Se calcula la resta de la posicion de Y_2 con respecto a Y (Y_2 - Y)
 
-    vmulss xmm0, xmm0, xmm0 ; (x2-x)^2
-    vmulss xmm1, xmm1, xmm1 ; (y2-y)^2
+    vmulss xmm0, xmm0, xmm0  ; Se eleva a la 2 los resultado anterios (X_2 - X)^2
+    vmulss xmm1, xmm1, xmm1  ; (Y_2 - Y)^2
 
-    vaddss xmm0, xmm0, xmm1  ; ( (x2-x)^2 + (y2-y)^2 )
+    vaddss xmm0, xmm0, xmm1  ; Se suman los dos resultados anteriores ( (X_2 - X)^2 + (Y_2 - Y)^2 )
 
-    vsqrtss xmm0, xmm0       ; raiz ( (x2-x)^2 + (y2-y)^2 )
+    vsqrtss xmm0, xmm0       ; Y por ultimo se calcula la raiz de lo anterior  (raiz ((x2-x)^2 + (y2-y)^2) )
 
     mov rsp, rbp 
     pop rbp
