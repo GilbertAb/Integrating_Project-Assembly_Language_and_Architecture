@@ -1,7 +1,7 @@
 section .data
     CONSTANTE: dd 0.0000000572
     CONSTANTE2: dd 273.15
-    CONSTANTE3: dd 10000.0
+    CONSTANTE3: dd 10000.0   ; Número de píxeles de una imagen
 
 
 section .text
