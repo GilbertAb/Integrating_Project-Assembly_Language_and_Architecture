@@ -47,10 +47,10 @@ calcularTemperatura:
     push rbp
     mov rbp, rsp
 
-    ;vmulss xmm0, xmm0, [CONSTANTE]  ; ( Radiacion * CONSTANTE )
-    vsqrtss xmm0, xmm0, xmm0
-    vsqrtss xmm0, xmm0, xmm0
-    ;vsubss xmm0, xmm0, [CONSTANTE2]
+    ;vmulss xmm0, xmm0, [CONSTANTE]  ; ( Radiacion * CONSTANTE ) ;Multiplicar la radiacion por la constante 0.0000000572
+    vsqrtss xmm0, xmm0, xmm0  
+    vsqrtss xmm0, xmm0, xmm0  ;Sacarle 2 veces raiz cuadrada, que equivale a sacarle raiz cuarta.
+    ;vsubss xmm0, xmm0, [CONSTANTE2] ;Restarle 273.15 para pasarlo de Kelvin a Centigrados
 
 
     mov rsp, rbp 
