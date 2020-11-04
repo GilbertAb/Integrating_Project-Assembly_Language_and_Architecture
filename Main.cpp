@@ -61,7 +61,7 @@ int main()
     {
         
         getline(myfile, line);
-        cout << "Parametros de persona numero " << i << endl;
+        cout << "*Persona numero " << i+1 << endl;
         //Proceso que llama la funcion Tokenizer que convierte la linea en tokens de una manera thread safe y los pone el el vector tokens.
         vector<float> tokens = Tokenizer(line);
 	    
@@ -69,19 +69,16 @@ int main()
         param_2 = tokens.at(1); // Coordenada Y
         param_3 = tokens.at(2); // Coordenada X2
         param_4 = tokens.at(3); // Coordenada Y2
-        //resultado = calcularDistancia(param_1, param_2,param_3, param_4);
-        //cout << "Distancia: "<< resultado << endl;
+        resultado = calcularDistancia(param_1, param_2,param_3, param_4);
+        cout << "Distancia: "<< resultado << endl;
         //Se guarda el resultado en el archivo.
-        cout << param_1 << endl; // Se imprime solo para verificar que el metodo sirva (Luego esto se eliminará)
-        cout << param_2 << endl;
-        cout << param_3 << endl;
-        cout << param_4 << endl;
+        //cout << param_1 << endl; // Se imprime solo para verificar que el metodo sirva (Luego esto se eliminará)
+        //cout << param_2 << endl;
+        //cout << param_3 << endl;
+        //cout << param_4 << endl;
         param_1 = tokens.at(4); // Radio
-         //resultado = calcularTemperatura(param_1, param_2);
-       
-
-        cout << param_1 << endl;
-
+        resultado = calcularTemperatura(param_1);
+	cout << "Temperatura: "<< resultado << endl;
        
         param_1 = tokens.at(5);  // Pixel A
         param_2 = tokens.at(6);  // Pixel B
@@ -89,8 +86,9 @@ int main()
         cout << "Mascarilla: "<< resultado << endl;
         //Se guarda el resultado en el archivo.
 
-        cout << param_1 << endl;
-        cout << param_2 << endl;
+        //cout << param_1 << endl;
+        //cout << param_2 << endl;
+	cout << " " << endl;
     }
    
     //Cerrar el archivo.
