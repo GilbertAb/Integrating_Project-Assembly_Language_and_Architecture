@@ -6,19 +6,18 @@ section .data
                       dd 10000.0
 ;   29 dd + 3 dd = 1k
 ;                                       REGISTROS
-    myXmm0: dd 0 
+    myXmm0: dd 0  
     myXmm1: dd 0
     myXmm2: dd 0
     myXmm3: dd 0 
     myXmm4: dd 0 
-    myXmm5: dd 0
+    myCR:   dd 0; Contador
 
 ;   CONSTANTE:  dd 0.0000000572  ; Constante para el calculo de temperatura.
 ;   CONSTANTE2: dd 273.15        ; Constante de Conversion (Kelvin a Centigrados).
 ;   CONSTANTE3: dd 10000.0       ; Número de píxeles de una imagen.
 
 section .text
-global calcularDistancia
 
 %macro suma 2
     vmovss xmm0,[%1]
@@ -68,8 +67,35 @@ global calcularDistancia
 
 %endmacro 
 
+%macro incrementarContador
+
+    mov eax, [myCR]
+    add eax, 28
+    mov [myCR], eax
+
+%endmacro
+
 global almacenarEnMemoria
 almacenarEnMemoria:
+    
+    vmovss [memoria + myCR],    xmm0  ; Coordenada X
+    vmovss [memoria + myCR+4],  xmm1  ; Coordenada Y
+    vmovss [memoria + myCR+8],  xmm2  ; Coordenada X2
+    vmovss [memoria + myCR+12], xmm3  ; Coordenada Y2
+    vmovss [memoria + myCR+16], xmm4  ; Radio
+    vmovss [memoria + myCR+20], xmm5  ; Pixel A
+    vmovss [memoria + myCR+24], xmm6  ; Pixel B
+
+    incrementarContador               ; MyCR
+    ret 
+
+global ResetearContador
+ResetearContador:
+
+    mov [myCR], 0
+    ret 
+
+; Falta poner metodo que busque los datos desde memoria y los monga en los MyXmm#
 
 
 ;******************************************************************************************************************
@@ -79,7 +105,7 @@ almacenarEnMemoria:
 ;             XMM1--> Coordenada Y.
 ;             XMM2--> Coordenada X2.
 ;             XMM3--> Coordenada Y2.
-
+global calcularDistancia
 calcularDistancia:         
 
     push rbp
