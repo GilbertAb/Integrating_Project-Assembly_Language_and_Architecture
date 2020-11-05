@@ -7,6 +7,7 @@ using namespace std;
 extern "C" float calcularDistancia(float, float, float, float);
 extern "C" float calcularTemperatura(float);
 extern "C" float calcularMascarilla(float, float);
+extern "C" float almacenarEnMemoria(float, float, float, float, float, float, float);
 
 vector<float> Tokenizer(const string &line)
 {
@@ -54,7 +55,11 @@ int main()
     float param_2;
     float param_3;
     float param_4;
+    float param_5;
+    float param_6;
+    float param_7;
     float resultado;
+    int numroPersona;
 
     //For para procesar cada linea.
     for (int i = 0; i < numeroDeLineas; i++)
@@ -69,6 +74,12 @@ int main()
         param_2 = tokens.at(1); // Coordenada Y
         param_3 = tokens.at(2); // Coordenada X2
         param_4 = tokens.at(3); // Coordenada Y2
+        param_5 = tokens.at(4); // Radio
+        param_6 = tokens.at(5); // Pixel A
+        param_7 = tokens.at(6); // Pixel B
+
+        almacenarEnMemoria(param_1, param_2, param_3, param_4, param_5, param_6, param_7);
+
         resultado = calcularDistancia(param_1, param_2,param_3, param_4);
         cout << "Distancia: "<< resultado << endl;
         //Se guarda el resultado en el archivo.

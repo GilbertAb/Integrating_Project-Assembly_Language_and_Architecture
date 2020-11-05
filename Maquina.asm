@@ -1,12 +1,75 @@
 section .data
-    ;align 16
-    CONSTANTE: dd 0.0000000572
-    CONSTANTE2: dd 273.15
-    CONSTANTE3: dd 10000.0   ; Número de píxeles de una imagen
+;                                       MEMORIA
+    Memoria: times 29 dd 0 
+                      dd 0.0000000572
+                      dd 273.15
+                      dd 10000.0
+;   29 dd + 3 dd = 1k
+;                                       REGISTROS
+    myXmm0: dd 0 
+    myXmm1: dd 0
+    myXmm2: dd 0
+    myXmm3: dd 0 
+    myXmm4: dd 0 
+    myXmm5: dd 0
 
+;   CONSTANTE:  dd 0.0000000572  ; Constante para el calculo de temperatura.
+;   CONSTANTE2: dd 273.15        ; Constante de Conversion (Kelvin a Centigrados).
+;   CONSTANTE3: dd 10000.0       ; Número de píxeles de una imagen.
 
 section .text
 global calcularDistancia
+
+%macro suma 2
+    vmovss xmm0,[%1]
+    vmovss xmm1,[%2]
+
+    vaddss xmm0, xmm1
+    vmovss [%1], xmm0
+
+%endmacro 
+
+%macro resta 2
+    vmovss xmm0,[%1]
+    vmovss xmm1,[%2]
+
+    vsubss xmm0, xmm1
+    vmovss [%1], xmm0
+
+%endmacro 
+
+%macro multiplicacion 2
+
+    vmovss xmm0,[%1]
+    vmovss xmm1,[%2]
+
+    vmulss xmm0, xmm1
+    vmovss [%1], xmm0
+
+%endmacro 
+
+%macro division 2
+
+    vmovss xmm0,[%1]
+    vmovss xmm1,[%2]
+
+    vdivss xmm0, xmm1
+    vmovss [%1], xmm0
+
+%endmacro 
+
+%macro raizCuadrada 2
+
+    vmovss xmm0,[%1]
+    vmovss xmm1,[%2]
+
+    vsqrtss xmm0, xmm1
+    vmovss [%1], xmm0
+
+%endmacro 
+
+global almacenarEnMemoria
+almacenarEnMemoria:
 
 
 ;******************************************************************************************************************
