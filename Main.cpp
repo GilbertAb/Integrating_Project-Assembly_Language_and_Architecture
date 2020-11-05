@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <bits/stdc++.h> 
+#include <unistd.h>
 using namespace std;
 
 extern "C" float calcularDistancia(float, float, float, float);
@@ -61,47 +62,59 @@ int main()
     float resultado;
     int numroPersona;
 
-    //For para procesar cada linea.
-    for (int i = 0; i < numeroDeLineas; i++)
-    {
+    //Variables para la simulacion de ingreso.
+    srand(time(NULL));
+    int randomNumber; //Numero aleatorio de ingreso.
+    int randomEsperar; //Random de segundos a esperar para el siguiente ingreso.
+    int cantidadPersonas = numeroDeLineas; //Cantidad de personas totales.
+    int personasAnalizadas = 0; //Cantidad de personas analizadas hasta el momento.
+
+    while (personasAnalizadas<cantidadPersonas){
+        //Obtener los numeros aleatorios.
+        randomNumber = (rand() % 11);
+        if(randomNumber+personasAnalizadas>100){
+            randomNumber -= (randomNumber+personasAnalizadas) - 100;
+        }    
+        randomEsperar = (rand() % 5) + 2;
         
-        getline(myfile, line);
-        cout << "*Persona numero " << i+1 << endl;
-        //Proceso que llama la funcion Tokenizer que convierte la linea en tokens de una manera thread safe y los pone el el vector tokens.
-        vector<float> tokens = Tokenizer(line);
-	    
-        param_1 = tokens.at(0); // Coordenada X
-        param_2 = tokens.at(1); // Coordenada Y
-        param_3 = tokens.at(2); // Coordenada X2
-        param_4 = tokens.at(3); // Coordenada Y2
-        param_5 = tokens.at(4); // Radio
-        param_6 = tokens.at(5); // Pixel A
-        param_7 = tokens.at(6); // Pixel B
+        //Imprimir la cantidad que ingresaron.
+        if(randomNumber != 1){
+        cout << "Ingresaron " << randomNumber << " personas." << endl; 
+        }else{
+        cout << "Ingreso 1 persona." << endl; 
+        }
 
-        almacenarEnMemoria(param_1, param_2, param_3, param_4, param_5, param_6, param_7);
+        //For para procesar cada linea.
+        for (int i = personasAnalizadas; i < (personasAnalizadas + randomNumber); i++)
+        {
+            
+            getline(myfile, line); //Obtener la siguiente linea de datos.
+            //Imprimir el numero de persona analizada.
+            cout << "*Persona numero " << i+1 << " analizada."<< endl;
 
-        resultado = calcularDistancia(param_1, param_2,param_3, param_4);
-        cout << "Distancia: "<< resultado << endl;
-        //Se guarda el resultado en el archivo.
-        //cout << param_1 << endl; // Se imprime solo para verificar que el metodo sirva (Luego esto se eliminará)
-        //cout << param_2 << endl;
-        //cout << param_3 << endl;
-        //cout << param_4 << endl;
-        param_1 = tokens.at(4); // Radio
-        resultado = calcularTemperatura(param_1);
-	cout << "Temperatura: "<< resultado << endl;
-       
-        param_1 = tokens.at(5);  // Pixel A
-        param_2 = tokens.at(6);  // Pixel B
-        resultado = calcularMascarilla(param_1, param_2);
-        cout << "Mascarilla: "<< resultado << endl;
-        //Se guarda el resultado en el archivo.
+            //Proceso que llama la funcion Tokenizer que convierte la linea en tokens de una manera thread safe y los pone el el vector tokens.
+            vector<float> tokens = Tokenizer(line);   
 
-        //cout << param_1 << endl;
-        //cout << param_2 << endl;
-	cout << " " << endl;
+            //Asignar los tokens a los parametros.
+            param_1 = tokens.at(0); // Coordenada X
+            param_2 = tokens.at(1); // Coordenada Y
+            param_3 = tokens.at(2); // Coordenada X2
+            param_4 = tokens.at(3); // Coordenada Y2
+            param_5 = tokens.at(4); // Radio
+            param_6 = tokens.at(5); // Pixel A
+            param_7 = tokens.at(6); // Pixel B
+            //Almacenar en memoria.
+            almacenarEnMemoria(param_1, param_2, param_3, param_4, param_5, param_6, param_7);
+
+            //Se guarda el resultado en el archivo.
+        }
+        //Esperar para la siguiente llegada de personas.
+        sleep(randomEsperar);
+        //Llevar la cuenta de las personas analizadas.
+        personasAnalizadas += randomNumber;
+        
+        cout << " " << endl;
     }
-   
     //Cerrar el archivo.
     myfile.close();
     return 0;
