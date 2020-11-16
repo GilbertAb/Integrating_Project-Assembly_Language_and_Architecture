@@ -5,10 +5,11 @@
 #include <unistd.h>
 using namespace std;
 
-extern "C" float calcularDistancia(float, float, float, float);
-extern "C" float calcularTemperatura(float);
-extern "C" float calcularMascarilla(float, float);
+extern "C" float calcularDistancia();
+extern "C" float calcularTemperatura();
+extern "C" float calcularMascarilla();
 extern "C" float almacenarEnMemoria(float, float, float, float, float, float, float);
+extern "C" void ResetearContador();
 
 vector<float> Tokenizer(const string &line)
 {
@@ -68,7 +69,7 @@ int main()
     int randomEsperar; //Random de segundos a esperar para el siguiente ingreso.
     int cantidadPersonas = numeroDeLineas; //Cantidad de personas totales.
     int personasAnalizadas = 0; //Cantidad de personas analizadas hasta el momento.
-
+    int cp = 1;
     while (personasAnalizadas<cantidadPersonas){
         //Obtener los numeros aleatorios.
         randomNumber = (rand() % 11);
@@ -108,8 +109,32 @@ int main()
 
             //Se guarda el resultado en el archivo.
         }
+        ResetearContador();
+        float resultado = 0.0;  
+        for (int i = personasAnalizadas; i < (personasAnalizadas + randomNumber); i++)
+        {
+            std::cout<<"PERSONA: "<< cp <<std::endl;
+            std::cout<<"CalcularDistancia"<<std::endl;
+            resultado = calcularDistancia();
+            std::cout<<resultado<<std::endl;
+            std::cout<<"calcularTemperatura"<<std::endl;
+            resultado = calcularTemperatura();
+            std::cout<<resultado<<std::endl;
+            std::cout<<"calcularMascarilla"<<std::endl;
+            resultado = calcularMascarilla();
+            std::cout<<resultado<<std::endl;
+
+            std::cout<<std::endl;
+            std::cout<<std::endl;
+            std::cout<<std::endl;
+
+            cp++;
+
+        }
+        ResetearContador();
+    
         //Esperar para la siguiente llegada de personas.
-        sleep(randomEsperar);
+        //sleep(randomEsperar);
         //Llevar la cuenta de las personas analizadas.
         personasAnalizadas += randomNumber;
         
