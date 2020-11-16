@@ -5,6 +5,11 @@
 #include <unistd.h>
 using namespace std;
 
+#define NC "\e[0m"
+#define RED "\e[0;31m"
+#define GRN "\e[0;32m"
+
+
 extern "C" float calcularDistancia();
 extern "C" float calcularTemperatura();
 extern "C" float calcularMascarilla();
@@ -31,6 +36,9 @@ vector<float> Tokenizer(const string &line)
 
 int main()
 {
+    ofstream resultsFile;
+    resultsFile.open("resultados.txt");
+    
     ifstream myfile;
     //Abrir el archivo. Aqui se debe poner el nombre del archivo.
     myfile.open("datos.txt");
@@ -60,7 +68,12 @@ int main()
     float param_5;
     float param_6;
     float param_7;
+    //Variables para resultados
     float resultado;
+    float distancia;
+    float temperatura;
+    float mascarilla;
+
     int numroPersona;
 
     //Variables para la simulacion de ingreso.
@@ -69,7 +82,15 @@ int main()
     int randomEsperar; //Random de segundos a esperar para el siguiente ingreso.
     int cantidadPersonas = numeroDeLineas; //Cantidad de personas totales.
     int personasAnalizadas = 0; //Cantidad de personas analizadas hasta el momento.
-    int cp = 1;
+    int cp = 0;
+    int numPersona=1;
+
+    resultsFile << "------------------------------------------------------------------\n";
+    resultsFile << "|   Persona    |  Distancia   |  Temperatura  | Uso de mascarilla |\n";
+
+    resultsFile << fixed << setprecision(2);
+
+
     while (personasAnalizadas<cantidadPersonas){
         //Obtener los numeros aleatorios.
         randomNumber = (rand() % 11);
@@ -79,11 +100,11 @@ int main()
         randomEsperar = (rand() % 5) + 2;
         
         //Imprimir la cantidad que ingresaron.
-        if(randomNumber != 1){
+        /*if(randomNumber != 1){
         cout << "Ingresaron " << randomNumber << " personas." << endl; 
         }else{
         cout << "Ingreso 1 persona." << endl; 
-        }
+        }*/
 
         //For para procesar cada linea.
         for (int i = personasAnalizadas; i < (personasAnalizadas + randomNumber); i++)
@@ -91,7 +112,7 @@ int main()
             
             getline(myfile, line); //Obtener la siguiente linea de datos.
             //Imprimir el numero de persona analizada.
-            cout << "*Persona numero " << i+1 << " analizada."<< endl;
+            //cout << "*Persona numero " << i+1 << " analizada."<< endl;
 
             //Proceso que llama la funcion Tokenizer que convierte la linea en tokens de una manera thread safe y los pone el el vector tokens.
             vector<float> tokens = Tokenizer(line);   
@@ -109,28 +130,91 @@ int main()
 
             //Se guarda el resultado en el archivo.
         }
+
         ResetearContador();
         float resultado = 0.0;  
+        
         for (int i = personasAnalizadas; i < (personasAnalizadas + randomNumber); i++)
         {
-            std::cout<<"PERSONA: "<< cp <<std::endl;
-            std::cout<<"CalcularDistancia"<<std::endl;
-            resultado = calcularDistancia();
-            std::cout<<resultado<<std::endl;
-            std::cout<<"calcularTemperatura"<<std::endl;
-            resultado = calcularTemperatura();
-            std::cout<<resultado<<std::endl;
-            std::cout<<"calcularMascarilla"<<std::endl;
-            resultado = calcularMascarilla();
-            std::cout<<resultado<<std::endl;
+            resultsFile << "------------------------------------------------------------------\n";
+            
+            resultsFile << "|\t" << i+1 << "\t|"; //Número de persona
+            
+            //std::cout<<"PERSONA: "<< cp <<std::endl;
+            //std::cout<<"CalcularDistancia"<<std::endl;
+            
+            distancia = calcularDistancia();
+            
+            //std::cout<<resultado<<std::endl;
+            //std::cout<<"calcularTemperatura"<<std::endl;
+            
+            temperatura = calcularTemperatura();
+            
+            
+            //std::cout<<resultado<<std::endl;
+            //std::cout<<"calcularMascarilla"<<std::endl;
+            mascarilla = calcularMascarilla();
 
-            std::cout<<std::endl;
-            std::cout<<std::endl;
-            std::cout<<std::endl;
+            if(distancia < 4.0 || temperatura > 38.0 || mascarilla >= 1.0){
+                if(numPersona<10){
+                    printf(NC "[ Persona  ");
+                }else{
+                    printf(NC "[ Persona ");
+                }
+                std::cout<<numPersona++;
+                if(distancia > 4.0){
+                    printf(GRN " D");
+                }else{
+                    printf(RED " D");
+                }
+                if(temperatura < 38.0){
+                    printf(GRN " T");
+                }else{
+                    printf(RED " T");
+                }
+                if(mascarilla < 1.0){
+                    printf(GRN " M");
+                }else{
+                    printf(RED " M");
+                }
+                printf(NC " ]");
+            }else{
+                if(numPersona<10){
+                    printf(NC "[ Persona  ");
+                }else{
+                    printf(NC "[ Persona ");
+                }
+                std::cout<< numPersona++;
+                printf(GRN " D T M ");
+                printf(NC "]");
+            }
+            
+
+
+
+            resultsFile << "\t" << distancia << "\t|";
+            resultsFile << "\t"<< temperatura<< "\t|";
+
+            if(mascarilla<1.1){
+                resultsFile << "        Sí        |\n";
+            }else{
+                resultsFile << "        No        |\n";
+            }
+
+            //std::cout<<resultado<<std::endl;
+
+            //std::cout<<std::endl;
+            //std::cout<<std::endl;
+            //std::cout<<std::endl;
 
             cp++;
+            if(cp == 10){
+                printf("\n");
+                cp=0;
+            }
 
         }
+        
         ResetearContador();
     
         //Esperar para la siguiente llegada de personas.
@@ -138,8 +222,9 @@ int main()
         //Llevar la cuenta de las personas analizadas.
         personasAnalizadas += randomNumber;
         
-        cout << " " << endl;
+        //cout << " " << endl;
     }
+    resultsFile.close();
     //Cerrar el archivo.
     myfile.close();
     return 0;
