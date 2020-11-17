@@ -3,12 +3,12 @@
 #include <vector>
 #include <bits/stdc++.h> 
 #include <unistd.h>
+
 using namespace std;
 
 #define NC "\e[0m"
 #define RED "\e[0;31m"
 #define GRN "\e[0;32m"
-
 
 extern "C" float calcularDistancia();
 extern "C" float calcularTemperatura();
@@ -69,12 +69,9 @@ int main()
     float param_6;
     float param_7;
     //Variables para resultados
-    float resultado;
     float distancia;
     float temperatura;
     float mascarilla;
-
-    int numroPersona;
 
     //Variables para la simulacion de ingreso.
     srand(time(NULL));
@@ -82,37 +79,37 @@ int main()
     int randomEsperar; //Random de segundos a esperar para el siguiente ingreso.
     int cantidadPersonas = numeroDeLineas; //Cantidad de personas totales.
     int personasAnalizadas = 0; //Cantidad de personas analizadas hasta el momento.
-    int cp = 0;
     int numPersona=1;
 
+    //Inicio del archivo
+    resultsFile << "Si la distancia es menor a 2 metros, entonces no se cumple la medida de seguridad.\n";
+    resultsFile << "Si la temperatura es mayor igual a 37.2 grados celsius, entonces no se cumple la medida de seguridad.\n";
+    resultsFile << "Si no hay uso de mascarilla, entonces no se cumple la medida de seguridad.\n\n";
     resultsFile << "------------------------------------------------------------------\n";
     resultsFile << "|   Persona    |  Distancia   |  Temperatura  | Uso de mascarilla |\n";
-
     resultsFile << fixed << setprecision(2);
 
-
+    //Empezar a simular el ingreso de personas
     while (personasAnalizadas<cantidadPersonas){
-        //Obtener los numeros aleatorios.
         randomNumber = (rand() % 11);
         if(randomNumber+personasAnalizadas>100){
             randomNumber -= (randomNumber+personasAnalizadas) - 100;
         }    
         randomEsperar = (rand() % 5) + 2;
         
-        //Imprimir la cantidad que ingresaron.
-        /*if(randomNumber != 1){
-        cout << "Ingresaron " << randomNumber << " personas." << endl; 
+        //Imprimir la cantidad de personas que ingresaron en un momento determinado (también le llamamos frame).
+        printf(NC "");
+        if(randomNumber != 1){
+        cout << "\nIngresaron " << randomNumber << " personas." << endl; 
         }else{
-        cout << "Ingreso 1 persona." << endl; 
-        }*/
+        cout << "\nIngreso 1 persona." << endl; 
+        }
 
         //For para procesar cada linea.
         for (int i = personasAnalizadas; i < (personasAnalizadas + randomNumber); i++)
         {
             
             getline(myfile, line); //Obtener la siguiente linea de datos.
-            //Imprimir el numero de persona analizada.
-            //cout << "*Persona numero " << i+1 << " analizada."<< endl;
 
             //Proceso que llama la funcion Tokenizer que convierte la linea en tokens de una manera thread safe y los pone el el vector tokens.
             vector<float> tokens = Tokenizer(line);   
@@ -125,92 +122,76 @@ int main()
             param_5 = tokens.at(4); // Radio
             param_6 = tokens.at(5); // Pixel A
             param_7 = tokens.at(6); // Pixel B
+            
             //Almacenar en memoria.
             almacenarEnMemoria(param_1, param_2, param_3, param_4, param_5, param_6, param_7);
 
-            //Se guarda el resultado en el archivo.
         }
 
         ResetearContador();
-        float resultado = 0.0;  
         
         for (int i = personasAnalizadas; i < (personasAnalizadas + randomNumber); i++)
         {
             resultsFile << "------------------------------------------------------------------\n";
             
             resultsFile << "|\t" << i+1 << "\t|"; //Número de persona
-            
-            //std::cout<<"PERSONA: "<< cp <<std::endl;
-            //std::cout<<"CalcularDistancia"<<std::endl;
-            
+                        
             distancia = calcularDistancia();
-            
-            //std::cout<<resultado<<std::endl;
-            //std::cout<<"calcularTemperatura"<<std::endl;
             
             temperatura = calcularTemperatura();
             
-            
-            //std::cout<<resultado<<std::endl;
-            //std::cout<<"calcularMascarilla"<<std::endl;
             mascarilla = calcularMascarilla();
 
-            if(distancia < 4.0 || temperatura > 38.0 || mascarilla >= 1.0){
+            if(distancia < 2.0 || temperatura > 37.2 || mascarilla > 1.0){
+                printf(NC " [");
+                printf(RED "x");
+                printf(NC "]");
+
                 if(numPersona<10){
-                    printf(NC "[ Persona  ");
+                    printf(NC " Persona  ");
                 }else{
-                    printf(NC "[ Persona ");
+
+                    printf(NC " Persona ");
                 }
                 std::cout<<numPersona++;
-                if(distancia > 4.0){
+                if(distancia >= 2.0){
                     printf(GRN " D");
                 }else{
                     printf(RED " D");
                 }
-                if(temperatura < 38.0){
+                if(temperatura < 37.2){
                     printf(GRN " T");
                 }else{
                     printf(RED " T");
                 }
-                if(mascarilla < 1.0){
+                if(mascarilla <= 1.0){
                     printf(GRN " M");
                 }else{
                     printf(RED " M");
                 }
-                printf(NC " ]");
+                
             }else{
+                printf(NC " [");
+                printf(GRN "a");
+                printf(NC "]");
+
                 if(numPersona<10){
-                    printf(NC "[ Persona  ");
+                    printf(NC " Persona  ");
                 }else{
-                    printf(NC "[ Persona ");
+                    printf(NC " Persona ");
                 }
                 std::cout<< numPersona++;
                 printf(GRN " D T M ");
-                printf(NC "]");
+                
             }
-            
-
-
-
-            resultsFile << "\t" << distancia << "\t|";
-            resultsFile << "\t"<< temperatura<< "\t|";
+            std::cout<<""<<std::endl;
+            resultsFile << "    " << distancia << "m\t|";
+            resultsFile << "    "<< temperatura<< "°\t|";
 
             if(mascarilla<1.1){
                 resultsFile << "        Sí        |\n";
             }else{
                 resultsFile << "        No        |\n";
-            }
-
-            //std::cout<<resultado<<std::endl;
-
-            //std::cout<<std::endl;
-            //std::cout<<std::endl;
-            //std::cout<<std::endl;
-
-            cp++;
-            if(cp == 10){
-                printf("\n");
-                cp=0;
             }
 
         }
@@ -219,14 +200,13 @@ int main()
     
         //Esperar para la siguiente llegada de personas.
         //sleep(randomEsperar);
+        
         //Llevar la cuenta de las personas analizadas.
         personasAnalizadas += randomNumber;
         
-        //cout << " " << endl;
     }
-    resultsFile.close();
-    //Cerrar el archivo.
     myfile.close();
+    resultsFile.close();
     return 0;
 
 }
