@@ -5,46 +5,45 @@
 #include <unistd.h>
 
 using namespace std;
-
+//Defines
 #define NC "\e[0m"
 #define RED "\e[0;31m"
 #define GRN "\e[0;32m"
 
+//Metodos programados en ensamblador.
 extern "C" float calcularDistancia();
 extern "C" float calcularTemperatura();
 extern "C" float calcularMascarilla();
 extern "C" float almacenarEnMemoria(float, float, float, float, float, float, float);
 extern "C" void ResetearContador();
 
+//Funcion que recibe un string y devuelve un vector de los tokens, o sea cada caracter.
 vector<float> Tokenizer(const string &line)
 {
     //Vector float donde se guardaran los tokens.
     vector<float> tokens;
-    
     stringstream check1(line);
-
     string intermediate; 
-
     while(getline(check1, intermediate, ' ')) 
     { 
-        //Stoi para string a int, stof para string a float, stod para string a double
         tokens.push_back(stof(intermediate)); 
     } 
-
     return tokens;
 }
 
 int main()
 {
+    //Abrir el archivo de los resultados.
     ofstream resultsFile;
     resultsFile.open("resultados.txt");
     
     ifstream myfile;
-    //Abrir el archivo. Aqui se debe poner el nombre del archivo.
+    //Abrir el archivo de los datos. Aqui se debe poner el nombre del archivo.
     myfile.open("datos.txt");
     
     //Variable string para contar la cantidad de lineas en el archivo.
     string line;
+    //Variable para saber el numero de linea actual.
     int numeroLinea = 0;
     //Variable en que se guarda la cantidad de lineas del archivo.
     int numeroDeLineas = 0;
@@ -68,6 +67,7 @@ int main()
     float param_5;
     float param_6;
     float param_7;
+
     //Variables para resultados
     float distancia;
     float temperatura;
@@ -91,10 +91,12 @@ int main()
 
     //Empezar a simular el ingreso de personas
     while (personasAnalizadas<cantidadPersonas){
+        //Sacar numero aleatorio entre 0 y 10, que sera la cantidad de personas que ingresan por ciclo.
         randomNumber = (rand() % 11);
         if(randomNumber+personasAnalizadas>100){
             randomNumber -= (randomNumber+personasAnalizadas) - 100;
         }    
+        //Cantidad aleatoria de espera.
         randomEsperar = (rand() % 5) + 2;
         
         //Imprimir la cantidad de personas que ingresaron en un momento determinado (también le llamamos frame).
@@ -105,7 +107,7 @@ int main()
         cout << "\nIngreso 1 persona." << endl; 
         }
 
-        //For para procesar cada linea.
+        //For para procesar cada linea, o sea cada persona.
         for (int i = personasAnalizadas; i < (personasAnalizadas + randomNumber); i++)
         {
             
@@ -136,12 +138,12 @@ int main()
             
             resultsFile << "|\t" << i+1 << "\t|"; //Número de persona
                         
-            distancia = calcularDistancia();
+            distancia = calcularDistancia(); 
             
             temperatura = calcularTemperatura();
             
             mascarilla = calcularMascarilla();
-
+            //Mostrar advertencias si los valores son mayores de los correctos.
             if(distancia < 2.0 || temperatura > 37.2 || mascarilla > 1.0){
                 printf(NC " [");
                 printf(RED "x");
@@ -199,12 +201,13 @@ int main()
         ResetearContador();
     
         //Esperar para la siguiente llegada de personas.
-        //sleep(randomEsperar);
+        sleep(randomEsperar);
         
         //Llevar la cuenta de las personas analizadas.
         personasAnalizadas += randomNumber;
         
     }
+    //Cerrar los archivos.
     myfile.close();
     resultsFile.close();
     return 0;

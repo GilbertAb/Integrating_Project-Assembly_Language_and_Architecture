@@ -15,7 +15,7 @@ section .data
     myCR:   dd 0 ; Registro Contador (Counter Register)
 
 section .text
-
+;Macro para sumar 2 numeros, se guarda en el primer parametro.
 %macro sumar 2
     vmovss xmm0,[%1]
     vmovss xmm1,[%2]
@@ -24,7 +24,7 @@ section .text
     vmovss [%1], xmm0
 
 %endmacro 
-
+;Macro para restar 2 numeros, se guarda en el primer parametro.
 %macro restar 2
     vmovss xmm0,[%1]
     vmovss xmm1,[%2]
@@ -33,7 +33,7 @@ section .text
     vmovss [%1], xmm0
 
 %endmacro 
-
+;Macro para multiplicar 2 numeros, se guarda en el primer parametro.
 %macro multiplicar 2
 
     vmovss xmm0,[%1]
@@ -43,7 +43,7 @@ section .text
     vmovss [%1], xmm0
 
 %endmacro 
-
+;Macro para dividir 2 numeros, se guarda en el primer parametro.
 %macro dividir 2
 
     vmovss xmm0,[%1]
@@ -53,7 +53,7 @@ section .text
     vmovss [%1], xmm0
 
 %endmacro 
-
+;Macro para sacar la raiz cuadrada de un numero.
 %macro raizCuadrada 2
 
     vmovss xmm0,[%1]
@@ -63,7 +63,7 @@ section .text
     vmovss [%1], xmm0
 
 %endmacro 
-
+;Macro para incrementar el contador.
 %macro incrementarContador 1
 
     mov rax, 0
